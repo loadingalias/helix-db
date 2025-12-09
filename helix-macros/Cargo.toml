@@ -11,10 +11,10 @@ description = "Proc macros for HelixDB"
 proc-macro = true
 
 [dependencies]
-syn = { version = "2.0.104", features = ["full"] }
-quote = "1.0.40"
+dirs = { workspace = true } #unified
 proc-macro2 = "1.0.95"
-dirs = "5.0.1"
+quote = "1.0.40"
+syn = { version = "2.0.104", features = ["full"] }
 
 [features]
 debug-output = []

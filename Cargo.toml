@@ -9,6 +9,29 @@ members = [
 ]
 resolver = "2"
 
+[workspace.dependencies]
+bumpalo = { version = "^3.19.0", features = ["boxed", "collections", "serde"] } #unified
+chrono = { version = "^0.4.42", features = ["serde"] } #unified
+clap = { version = "^4.5.53", features = ["derive"] } #unified
+dirs = "^5.0.1" #unified
+dotenvy = "^0.15.7" #unified
+flume = { version = "^0.11.1", features = ["async", "eventual-fairness", "select"] } #unified
+heed3 = "^0.22.0" #unified
+inventory = "^0.3.19" #unified
+num_cpus = "^1.17.0" #unified
+rand = "^0.9.1" #unified
+reqwest = { version = "^0.12.23", features = ["blocking", "json"] } #unified
+serde = { version = "^1.0.228", features = ["derive"] } #unified
+serde_json = "^1.0.143" #unified
+sha2 = "^0.10.8" #unified
+tempfile = "^3.23.0" #unified
+tokio = { version = "^1.47.1", features = ["full"] } #unified
+tracing = "^0.1.41" #unified
+uuid = { version = "^1.18.1", features = ["fast-rng"] } #unified
+
+[workspace.package]
+rust-version = "1.82"
+
 [profile.release]
 opt-level = 2
 codegen-units = 1
