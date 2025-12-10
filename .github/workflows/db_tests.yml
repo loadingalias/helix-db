@@ -5,8 +5,23 @@ on:
     branches: [ main, dev ]
 
 jobs:
+  detect:
+    name: Detect changes
+    runs-on: ubuntu-latest
+    outputs:
+      should-run: ${{ steps.rail.outputs.count != '0' && steps.rail.outputs.docs-only != 'true' }}
+      affected: ${{ steps.rail.outputs.crates }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: loadingalias/cargo-rail-action@v1
+        id: rail
+
   test:
     name: Test helix_engine
+    needs: detect
+    if: needs.detect.outputs.should-run == 'true' && contains(needs.detect.outputs.affected, 'helix-db')
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
@@ -16,10 +31,10 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
-    
+
     - name: Setup Rust
       uses: dtolnay/rust-toolchain@stable
-      
+
     - name: Cache cargo dependencies
       uses: actions/cache@v4
       continue-on-error: true
@@ -31,14 +46,14 @@ jobs:
         key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') || 'fallback' }}
         restore-keys: |
           ${{ runner.os }}-cargo-
-          
+
     - name: Run tests
-      run: | 
+      run: |
         cd helix-db
         cargo test --release --lib -- --skip concurrency_tests
 
     - name: Run dev instance tests
-      run: | 
+      run: |
         cd helix-db
         cargo test --release --lib --features dev-instance -- --skip concurrency_tests
 
